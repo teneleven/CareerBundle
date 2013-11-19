@@ -1,0 +1,4 @@
+teneleven_career_job:
+    resource: "@TenelevenCareerBundle/Resources/config/routing/job.xml"
+    prefix:   /job
+

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:gedmo="http://gediminasm.org/schemas/orm/doctrine-extensions-mapping">
+  <entity repository-class="Teneleven\Bundle\CareerBundle\Entity\ReplyRepository" name="Teneleven\Bundle\CareerBundle\Entity\Reply" table="teneleven_careers_replies">
+    <id name="id" type="integer" column="id">
+      <generator strategy="AUTO"/>
+    </id>
+    <field name="firstName" type="string" column="first_name" length="255"/>
+    <field name="lastName" type="string" column="last_name" length="255"/>
+    <field name="phone" type="string" column="phone" length="255"/>
+    <field name="email" type="string" column="email" length="255"/>
+    <field name="qualifications" type="text" column="qualifications" />
+    <field name="resume" type="string" column="resume" length="255" nullable="true" />
+    <field name="createdAt" column="created_at" type="datetime">
+        <gedmo:timestampable on="create"/>
+    </field>
+    <field name="updatedAt" column="updated_at" type="datetime">
+        <gedmo:timestampable on="update"/>
+    </field>
+    <many-to-one field="job" target-entity="Teneleven\Bundle\CareerBundle\Entity\Job" inversed-by="replies">
+        <join-column name="job_id" referenced-column-name="id" nullable="false" />
+    </many-to-one>
+  </entity>
+</doctrine-mapping>
