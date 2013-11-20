@@ -79,9 +79,9 @@
 
 						<!-- File Button --> 
 						<div class="control-group">
-							{{ form_label(form.resume, '',{'label_attr': {'class':'control-label'}}) }}
+							{{ form_label(form.file, '',{'label_attr': {'class':'control-label'}}) }}
 							<div class="controls">
-								{{ form_widget(form.resume) }}
+								{{ form_widget(form.file) }}
 							</div>
 						</div>
 
@@ -94,6 +94,7 @@
 						</div>
 
 					</fieldset>
+					{{ form_widget(form.check) }}
 				{{ form_end(form) }}
 			</div>
 		</div>

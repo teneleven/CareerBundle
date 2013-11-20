@@ -3,6 +3,7 @@
 namespace Teneleven\Bundle\CareerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Reply
@@ -43,6 +44,26 @@ class Reply
      * @var string
      */
     private $resume;
+
+    /**
+     * @var \DateTime
+     */
+    private $createdAt;
+
+    /**
+     * @var \DateTime
+     */
+    private $updatedAt;
+
+    /**
+     * @var \Teneleven\Bundle\CareerBundle\Entity\Job
+     */
+    private $job;
+
+    /**
+     * @var string
+     */
+    private $file;
 
 
     /**
@@ -198,21 +219,71 @@ class Reply
     {
         return $this->resume;
     }
-    /**
-     * @var \DateTime
-     */
-    private $createdAt;
 
     /**
-     * @var \DateTime
+     * Get Absolute Path for Resume
+     * @return [type] [description]
      */
-    private $updatedAt;
+    public function getResumeAbsolutePath()
+    {
+        // the absolute directory path where uploaded
+        // documents should be saved
+        return __DIR__.'/../../../../../web/'.$this->getResumeRelativePath();
+    }
 
     /**
-     * @var \Teneleven\Bundle\CareerBundle\Entity\Job
+     * Get Relative Path for Resume
+     * @return [type] [description]
      */
-    private $job;
+    public function getResumeRelativePath()
+    {
+        // get rid of the __DIR__ so it doesn't screw up
+        return 'uploads/resume';
+    }
 
+    /**
+     * Sets file.
+     *
+     * @param UploadedFile $file
+     */
+    public function setFile(UploadedFile $file = null)
+    {
+        $this->file = $file;
+    }
+
+    /**
+     * Get file.
+     *
+     * @return UploadedFile
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    public function uploadResume()
+    {
+        // the file property can be empty if the field is not required
+        if (null === $this->getFile()) {
+            return;
+        }
+
+        // use the original file name here but you should
+        // sanitize it at least to avoid any security issues
+
+        // move takes the target directory and then the
+        // target filename to move to
+        $this->getFile()->move(
+            $this->getResumeAbsolutePath(),
+            $this->getFile()->getClientOriginalName()
+        );
+
+        // set the path property to the filename where you've saved the file
+        $this->resume = $this->getFile()->getClientOriginalName();
+
+        // clean up the file property as you won't need it anymore
+        $this->file = null;
+    }
 
     /**
      * Set createdAt

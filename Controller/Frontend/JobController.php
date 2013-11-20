@@ -10,6 +10,8 @@ use Teneleven\Bundle\CareerBundle\Entity\Reply;
 use Teneleven\Bundle\CareerBundle\Form\JobType;
 use Teneleven\Bundle\CareerBundle\Form\ReplyType;
 
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
 /**
  * Job controller.
  *
@@ -55,17 +57,23 @@ class JobController extends Controller
 
         $reply->setJob($job);
         
-        $replyForm = $this->createForm(new ReplyType(), $reply,array(
-            'action' => $this->generateUrl('teneleven_sandbox_careers_reply', array('slug' => $job->getSlug()))
+        $replyForm = $this->createForm(new ReplyType(), $reply, array(
+            'action' => $this->generateUrl('teneleven_sandbox_careers_reply', array(
+                'slug' => $job->getSlug()
+            ))
         ));     
 
         $replyForm->handleRequest($request);
 
         if ($replyForm->isValid()) {
+
+            $reply->setFile($replyForm['file']->getData());
+
+            $reply->uploadResume();
+
             $em->persist($reply);
+
             $em->flush();
-        }else{
-            var_dump($replyForm->getErrors());exit;
         }
 
         return $this->redirect($this->generateUrl('teneleven_sandbox_careers_show', array('slug' => $job->getSlug())));
