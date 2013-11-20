@@ -6,6 +6,7 @@
 
     <route id="job" pattern="/">
         <default key="_controller">TenelevenCareerBundle:Backend\Job:index</default>
+        <default key="layout">::base.html.twig</default>
     </route>
 
     <route id="job_show" pattern="/{id}/show">

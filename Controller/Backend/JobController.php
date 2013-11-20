@@ -19,7 +19,7 @@ class JobController extends Controller
      * Lists all Job entities.
      *
      */
-    public function indexAction()
+    public function indexAction($layout = '::base.html.twig')
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -27,6 +27,7 @@ class JobController extends Controller
 
         return $this->render('TenelevenCareerBundle:Backend:index.html.twig', array(
             'entities' => $entities,
+            'layout' => $layout
         ));
     }
     /**
