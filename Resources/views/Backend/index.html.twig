@@ -10,7 +10,6 @@
                 <th>Slug</th>
                 <th>Releasedate</th>
                 <th>Expirationdate</th>
-                <th>Description</th>
                 <th>Location</th>
                 <th>Contact</th>
                 <th>Ispublished</th>
@@ -27,7 +26,6 @@
                 <td>{{ entity.slug }}</td>
                 <td>{% if entity.releaseDate %}{{ entity.releaseDate|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>{% if entity.expirationDate %}{{ entity.expirationDate|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{{ entity.description }}</td>
                 <td>{{ entity.location }}</td>
                 <td>{{ entity.contact }}</td>
                 <td>{{ entity.isPublished }}</td>

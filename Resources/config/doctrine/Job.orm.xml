@@ -24,6 +24,6 @@
     <field name="updatedAt" column="updated_at" type="datetime">
         <gedmo:timestampable on="update"/>
     </field>
-    <one-to-many field="replies" target-entity="Reply" mapped-by="job_id" />
+    <one-to-many field="replies" target-entity="Reply" mapped-by="job" />
   </entity>
 </doctrine-mapping>
