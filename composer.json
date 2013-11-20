@@ -1,0 +1,13 @@
+{
+	"name": "teneleven/career-bundle",
+	"version": "0.1",
+	"source": {
+	    "type": "git",
+	    "url": "git@teneleven.beanstalkapp.com:/teneleven/careerbundle.git",
+	    "reference": "master"
+	},
+	"autoload": {
+	    "psr-0": { "Teneleven\\Bundle\\CareerBundle": "" }
+	},
+	"target-dir": "Teneleven/Bundle/CareerBundle"
+}
