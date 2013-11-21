@@ -1,15 +1,17 @@
-{% extends 'TenelevenCareerBundle::layout.html.twig' %}
+{% extends 'TenelevenCareerBundle::admin.html.twig' %}
+
+{% import 'TenelevenCareerBundle:Backend:macros.html.twig' as macros %}
 
 {% block teneleven_career_content -%}
-    <h1>Job creation</h1>
 
-    {{ form(form) }}
+    <h1>New Job</h1>
 
-    <ul class="record_actions">
-    <li>
-        <a href="{{ path('teneleven_career_backend_job') }}">
+    <div class="well">
+        <a href="{{ path('teneleven_career_backend_job') }}" class="btn btn-info">
             Back to the list
         </a>
-    </li>
-</ul>
+    </div>
+
+    {{ macros.form(form) }}
+
 {% endblock %}
