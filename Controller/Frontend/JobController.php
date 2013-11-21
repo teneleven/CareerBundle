@@ -89,7 +89,8 @@ class JobController extends Controller
 
             $reply->setFile($replyForm['file']->getData());
 
-            $reply->uploadResume();
+            $root = $this->container->getParameter('kernel.root_dir');
+            $reply->uploadResume($root);
 
             $em->persist($reply);
 

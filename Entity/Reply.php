@@ -266,20 +266,23 @@ class Reply
         return $this->file;
     }
 
-    public function uploadResume()
+    public function uploadResume($root)
     {
         // the file property can be empty if the field is not required
         if (null === $this->getFile()) {
             return;
         }
 
-        // use the original file name here but you should
-        // sanitize it at least to avoid any security issues
+        $path = realpath($root.'/../web/');
+
+        if(!file_exists($path)) {
+            return;
+        }
 
         // move takes the target directory and then the
         // target filename to move to
         $this->getFile()->move(
-            $this->getResumeAbsolutePath(),
+            $path."/".$this->getResumeRelativePath(),
             $this->getFile()->getClientOriginalName()
         );
 
