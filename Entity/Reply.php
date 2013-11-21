@@ -231,6 +231,11 @@ class Reply
         return __DIR__.'/../../../../../web/'.$this->getResumeRelativePath();
     }
 
+    public function getPath()
+    {
+        return "/".$this->getResumeRelativePath()."/".$this->getResume();
+    }
+
     /**
      * Get Relative Path for Resume
      * @return [type] [description]
