@@ -79,7 +79,8 @@ class JobController extends Controller
         $replyForm = $this->createForm(new ReplyType(), $reply, array(
             'action' => $this->generateUrl('teneleven_career_frontend_reply', array(
                 'slug' => $job->getSlug()
-            ))
+            )),
+            'method' => 'POST'
         ));     
 
         $replyForm->handleRequest($request);
@@ -95,6 +96,6 @@ class JobController extends Controller
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('teneleven_career_frontend_reply', array('slug' => $job->getSlug())));
+        return $this->redirect($this->generateUrl('teneleven_career_frontend_show', array('slug' => $job->getSlug())));
     }
 }
