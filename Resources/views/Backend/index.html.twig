@@ -1,6 +1,6 @@
-{% extends layout %}
+{% extends 'TenelevenCareerBundle::layout.html.twig' %}
 
-{% block body -%}
+{% block teneleven_career_content -%}
     <h1>Job list</h1>
 
     <table class="records_list">
@@ -8,37 +8,29 @@
             <tr>
                 <th>Title</th>
                 <th>Slug</th>
-                <th>Releasedate</th>
-                <th>Expirationdate</th>
                 <th>Location</th>
-                <th>Contact</th>
                 <th>Ispublished</th>
                 <th>Createdat</th>
                 <th>Updatedat</th>
-                <th>Id</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td><a href="{{ path('job_show', { 'id': entity.id }) }}">{{ entity.title }}</a></td>
+                <td><a href="{{ path('teneleven_career_backend_job_show', { 'id': entity.id }) }}">{{ entity.title }}</a></td>
                 <td>{{ entity.slug }}</td>
-                <td>{% if entity.releaseDate %}{{ entity.releaseDate|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if entity.expirationDate %}{{ entity.expirationDate|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>{{ entity.location }}</td>
-                <td>{{ entity.contact }}</td>
                 <td>{{ entity.isPublished }}</td>
                 <td>{% if entity.createdAt %}{{ entity.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>{% if entity.updatedAt %}{{ entity.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{{ entity.id }}</td>
                 <td>
                 <ul>
                     <li>
-                        <a href="{{ path('job_show', { 'id': entity.id }) }}">show</a>
+                        <a href="{{ path('teneleven_career_backend_job_show', { 'id': entity.id }) }}">show</a>
                     </li>
                     <li>
-                        <a href="{{ path('job_edit', { 'id': entity.id }) }}">edit</a>
+                        <a href="{{ path('teneleven_career_backend_job_edit', { 'id': entity.id }) }}">edit</a>
                     </li>
                 </ul>
                 </td>
@@ -49,7 +41,7 @@
 
         <ul>
         <li>
-            <a href="{{ path('job_new') }}">
+            <a href="{{ path('teneleven_career_backend_job_new') }}">
                 Create a new entry
             </a>
         </li>

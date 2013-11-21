@@ -19,15 +19,14 @@ class JobController extends Controller
      * Lists all Job entities.
      *
      */
-    public function indexAction($layout = '::base.html.twig')
+    public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('TenelevenCareerBundle:Job')->findAll();
 
         return $this->render('TenelevenCareerBundle:Backend:index.html.twig', array(
-            'entities' => $entities,
-            'layout' => $layout
+            'entities' => $entities
         ));
     }
     /**
@@ -45,7 +44,7 @@ class JobController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('job_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('teneleven_career_backend_job_show', array('id' => $entity->getId())));
         }
 
         return $this->render('TenelevenCareerBundle:Backend:new.html.twig', array(
@@ -64,7 +63,7 @@ class JobController extends Controller
     private function createCreateForm(Job $entity)
     {
         $form = $this->createForm(new JobType(), $entity, array(
-            'action' => $this->generateUrl('job_create'),
+            'action' => $this->generateUrl('teneleven_career_backend_job_create'),
             'method' => 'POST',
         ));
 
@@ -144,7 +143,7 @@ class JobController extends Controller
     private function createEditForm(Job $entity)
     {
         $form = $this->createForm(new JobType(), $entity, array(
-            'action' => $this->generateUrl('job_update', array('id' => $entity->getId())),
+            'action' => $this->generateUrl('teneleven_career_backend_job_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
@@ -173,7 +172,7 @@ class JobController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('job_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('teneleven_career_backend_job_edit', array('id' => $id)));
         }
 
         return $this->render('TenelevenCareerBundle:Backend:edit.html.twig', array(
@@ -216,7 +215,7 @@ class JobController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('job_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('teneleven_career_backend_job_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()

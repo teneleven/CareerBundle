@@ -1,13 +1,13 @@
-{% extends '::base.html.twig' %}
+{% extends 'TenelevenCareerBundle::layout.html.twig' %}
 
-{% block body -%}
+{% block teneleven_career_content -%}
     <h1>Job creation</h1>
 
     {{ form(form) }}
 
-        <ul class="record_actions">
+    <ul class="record_actions">
     <li>
-        <a href="{{ path('job') }}">
+        <a href="{{ path('teneleven_career_backend_job') }}">
             Back to the list
         </a>
     </li>

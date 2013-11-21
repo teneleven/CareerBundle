@@ -41,10 +41,13 @@ class JobController extends Controller
         $job = $em->getRepository('TenelevenCareerBundle:Job')->findOneBy(array('slug' => $slug));
 
         $replyForm = $this->createForm(new ReplyType(), new Reply(),array(
-            'action' => $this->generateUrl('teneleven_sandbox_careers_reply', array('slug' => $job->getSlug()))
+            'action' => $this->generateUrl('teneleven_career_frontend_reply', array('slug' => $job->getSlug()))
         ));
 
-        return $this->render('TenelevenCareerBundle:Frontend:show.html.twig', array('job' => $job, 'form' => $replyForm->createView()));
+        return $this->render('TenelevenCareerBundle:Frontend:show.html.twig', array(
+            'job' => $job, 
+            'form' => $replyForm->createView()
+        ));
     }
 
     public function replyAction($slug, Request $request)

@@ -4,17 +4,22 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <!--
+    
     <parameters>
-        <parameter key="teneleven_career.example.class">Teneleven\Bundle\CareerBundle\Example</parameter>
+        <parameter key="teneleven.career.backend.controller.class">Teneleven\Bundle\CareerBundle\Controller\Backend\JobController</parameter>
+        <parameter key="teneleven.career.frontend.controller.class">Teneleven\Bundle\CareerBundle\Controller\Frontend\JobController</parameter>
     </parameters>
 
     <services>
-        <service id="teneleven_career.example" class="%teneleven_career.example.class%">
-            <argument type="service" id="service_id" />
-            <argument>plain_value</argument>
-            <argument>%parameter_name%</argument>
+        <service id="teneleven.career.backend.controller" class="%teneleven.career.backend.controller.class%">
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
+        </service>
+        <service id="teneleven.career.frontend.controller" class="%teneleven.career.frontend.controller.class%">
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
         </service>
     </services>
-    -->
 </container>
