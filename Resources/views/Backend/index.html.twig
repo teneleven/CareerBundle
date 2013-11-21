@@ -1,49 +1,16 @@
 {% extends 'TenelevenCareerBundle::layout.html.twig' %}
 
+{% import 'TenelevenCareerBundle:Backend:macros.html.twig' as macros %}
+
 {% block teneleven_career_content -%}
     <h1>Job list</h1>
 
-    <table class="records_list">
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Slug</th>
-                <th>Location</th>
-                <th>Ispublished</th>
-                <th>Createdat</th>
-                <th>Updatedat</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for entity in entities %}
-            <tr>
-                <td><a href="{{ path('teneleven_career_backend_job_show', { 'id': entity.id }) }}">{{ entity.title }}</a></td>
-                <td>{{ entity.slug }}</td>
-                <td>{{ entity.location }}</td>
-                <td>{{ entity.isPublished }}</td>
-                <td>{% if entity.createdAt %}{{ entity.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if entity.updatedAt %}{{ entity.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('teneleven_career_backend_job_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('teneleven_career_backend_job_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
-                </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="well">
+        <a href="{{ path('teneleven_career_backend_job_new') }}" class="btn btn-primary">
+            <i class="icon-plus-sign"></i> Create Job
+        </a>
+    </div>
 
-        <ul>
-        <li>
-            <a href="{{ path('teneleven_career_backend_job_new') }}">
-                Create a new entry
-            </a>
-        </li>
-    </ul>
-    {% endblock %}
+    {{ macros.list(entities) }}
+    
+{% endblock %}

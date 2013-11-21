@@ -4,7 +4,6 @@ namespace Teneleven\Bundle\CareerBundle\Controller\Backend;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Teneleven\Bundle\CareerBundle\Entity\Job;
 use Teneleven\Bundle\CareerBundle\Form\JobType;
 
@@ -16,8 +15,7 @@ class JobController extends Controller
 {
 
     /**
-     * Lists all Job entities.
-     *
+     * Lists all Jobs.
      */
     public function indexAction()
     {
@@ -217,7 +215,7 @@ class JobController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('teneleven_career_backend_job_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
+            ->add('submit', 'submit', array('label' => 'Delete', 'attr' => array('class' => 'btn btn-danger')))
             ->getForm()
         ;
     }

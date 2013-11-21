@@ -3,7 +3,17 @@
 {% block teneleven_career_content -%}
     <h1>Job</h1>
 
-    <table class="record_properties">
+    <div class="well">
+        <a href="{{ path('teneleven_career_backend_job') }}" class="btn btn-info">
+            Back to the list
+        </a>
+        <a href="{{ path('teneleven_career_backend_job_edit', { 'id': entity.id }) }}" class="btn btn-primary">
+            Edit
+        </a>
+       
+    </div>
+
+    <table class="table">
         <tbody>
             <tr>
                 <th>Title</th>
@@ -52,8 +62,10 @@
         </tbody>
     </table>
 
-    <table>
+    <h2>Replies</h2>
+    <table class="table">
         <tr>
+            <th>Id</th>
             <th>First Name</th>
             <th>Last Name</th>
             <th>Email</th>
@@ -61,28 +73,20 @@
             <th>Qualifications</th>
             <th>Resume</th>
         </tr>
-    {% for reply in entity.replies %}
-        <tr>
-            <td>{{ reply.firstName }}</td>
-            <td>{{ reply.lastName }}</td>
-            <td>{{ reply.email }}</td>
-            <td>{{ reply.phone }}</td>
-            <td>{{ reply.qualifications }}</td>
-            <td>{{ reply.resume }}</td>
-        </tr>
-    {% endfor %}
-</table>
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('teneleven_career_backend_job') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('teneleven_career_backend_job_edit', { 'id': entity.id }) }}">
-            Edit
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+        {% for reply in entity.replies %}
+            <tr>
+                <td>{{ reply.id }}</td>
+                <td>{{ reply.firstName }}</td>
+                <td>{{ reply.lastName }}</td>
+                <td>{{ reply.email }}</td>
+                <td>{{ reply.phone }}</td>
+                <td>{{ reply.qualifications }}</td>
+                <td>{{ reply.resume }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <div class="well">
+        {{ form(delete_form) }}
+    </div>
 {% endblock %}
