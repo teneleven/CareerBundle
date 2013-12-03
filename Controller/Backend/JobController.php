@@ -34,12 +34,17 @@ class JobController extends Controller
     public function createAction(Request $request)
     {
         $entity = new Job();
+
         $form = $this->createCreateForm($entity);
+        
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+            
             $em = $this->getDoctrine()->getManager();
+            
             $em->persist($entity);
+            
             $em->flush();
 
             return $this->redirect($this->generateUrl('teneleven_career_backend_job_show', array('id' => $entity->getId())));

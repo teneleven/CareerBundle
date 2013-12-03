@@ -81,7 +81,7 @@ class JobController extends Controller
                 'slug' => $job->getSlug()
             )),
             'method' => 'POST'
-        ));     
+        ));
 
         $replyForm->handleRequest($request);
 
@@ -90,11 +90,24 @@ class JobController extends Controller
             $reply->setFile($replyForm['file']->getData());
 
             $root = $this->container->getParameter('kernel.root_dir');
+
             $reply->uploadResume($root);
 
             $em->persist($reply);
 
             $em->flush();
+
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                'Your Reply has been sent!'
+            );
+
+        } else {
+
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                'There was an error with your reply.'
+            );
         }
 
         return $this->redirect($this->generateUrl('teneleven_career_frontend_show', array('slug' => $job->getSlug())));
