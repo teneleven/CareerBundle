@@ -14,7 +14,11 @@
 
 	<route id="teneleven_career_frontend_reply" pattern="/{slug}/reply">
 	    <default key="_controller">teneleven.career.frontend.controller:replyAction</default>
-	    <requirement key="_method">post</requirement>
+	</route>
+
+	<route id="teneleven_career_frontend_thanks" pattern="/{slug}/thanks">
+	    <default key="_controller">teneleven.career.frontend.controller:showAction</default>
+	    <default key="template">TenelevenCareerBundle:Frontend:thanks.html.twig</default>
 	</route>
 
 </routes>

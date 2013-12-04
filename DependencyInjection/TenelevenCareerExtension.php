@@ -22,6 +22,16 @@ class TenelevenCareerExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
+        $container->setParameter('teneleven_career.from', $config['from']);
+
+        $container->setParameter('teneleven_career.to', $config['to']);
+
+        $container->setParameter('teneleven_career.subject', $config['subject']);
+
+        $container->setParameter('teneleven_career.content_type', $config['content_type']);
+
+        $container->setParameter('teneleven_career.template', $config['template']);
+
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
     }

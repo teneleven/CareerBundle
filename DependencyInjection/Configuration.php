@@ -20,6 +20,27 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('teneleven_career');
 
+        $rootNode
+            ->children()
+                ->scalarNode('from')
+                    ->defaultValue('no-reply@example.com')
+                ->end()
+                ->arrayNode('to')
+                    ->prototype('scalar')
+                    ->end()
+                ->end()
+                ->scalarNode('subject')
+                    ->defaultValue('Job Application Received')
+                ->end()
+                ->scalarnode('content_type')
+                    ->defaultValue('text/html')
+                ->end()
+                ->scalarnode('template')
+                    ->defaultValue('TenelevenCareerBundle:Frontend:email.html.twig')
+                ->end()
+            ->end()
+        ;
+
         // Here you should define the parameters that are allowed to
         // configure your bundle. See the documentation linked above for
         // more information on that topic.

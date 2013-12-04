@@ -97,19 +97,42 @@ class JobController extends Controller
 
             $em->flush();
 
-            $this->get('session')->getFlashBag()->add(
-                'success',
-                'Your Reply has been sent!'
-            );
+            $this->sendEmail($replyForm->getData());
 
-        } else {
+            return $this->redirect($this->generateUrl('teneleven_career_frontend_thanks', array(
+                'slug' => $job->getSlug())
+            ));
 
-            $this->get('session')->getFlashBag()->add(
-                'error',
-                'There was an error with your reply.'
-            );
         }
 
-        return $this->redirect($this->generateUrl('teneleven_career_frontend_show', array('slug' => $job->getSlug())));
+        $this->get('session')->getFlashBag()->add(
+            'error',
+            'There was an error with your reply.'
+        );
+
+        return $this->render('TenelevenCareerBundle:Frontend:show.html.twig', array(
+            'job' => $job, 
+            'form' => $replyForm->createView()
+        ));
+    }
+
+    protected function sendEmail($values)
+    {
+        $message = \Swift_Message::newInstance()
+            ->setSubject($this->container->getParameter('teneleven_career.subject'))
+            ->setFrom($this->container->getParameter('teneleven_career.from'))
+            ->setTo($this->container->getParameter('teneleven_career.to'))
+            ->setContentType($this->container->getParameter('teneleven_career.content_type'))
+            ->setBody(
+                $this->renderView(
+                    $this->container->getParameter('teneleven_career.template'),
+                    array(
+                        'values' => $values
+                    )
+                )
+            )
+        ;
+
+        $result = $this->get('mailer')->send($message);   
     }
 }

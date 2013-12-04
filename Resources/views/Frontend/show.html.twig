@@ -1,119 +1,130 @@
 {% extends 'TenelevenCareerBundle::layout.html.twig' %}
 
 {% block teneleven_career_content -%}
-<div class="row">
-	<div class="col-sm-7">
-		<h1>{{ job.title }}</h1>
-		<div class="careers-list">
-		    <div class="row">
-		        <div class="col-sm-2 first">Location:</div>
-		        <div class="col-sm-10">{{ job.location }}</div>    
-		    </div>
-		    <div class="row">
-		        <div class="col-sm-2 first">Reports To:</div>
-		        <div class="col-sm-10">{{ job.reportTo }}</div>    
-		    </div>
-		    <div class="row">
-		        <div class="col-sm-2 first">FLSA Status</div>
-		        <div class="col-sm-10">{{ job.status }}</div>    
-		    </div>
-		    <div class="row">
-		        <div class="col-sm-2 first">Summary:</div>
-		        <div class="col-sm-10">{{ job.summary }}</div>    
-		    </div>
-		</div>
-
-		<div class="row">
-			<div class="col-sm-12">{{ job.description|raw }}</div>
-		</div>
-	</div>
-	<div class="col-sm-5">
-		<div id="careers-application" class="panel panel-default">
-			<div class="panel-heading">
-				<h3 class="panel-title"><i class="icon icon-edit"></i> Reply Form</h3>
+	<div class="row">
+		<div class="col-sm-7">
+			<h1>{{ job.title }}</h1>
+			<div class="careers-list">
+			    <div class="row">
+			        <div class="col-sm-2 first">Location:</div>
+			        <div class="col-sm-10">{{ job.location }}</div>    
+			    </div>
+			    <div class="row">
+			        <div class="col-sm-2 first">Reports To:</div>
+			        <div class="col-sm-10">{{ job.reportTo }}</div>    
+			    </div>
+			    <div class="row">
+			        <div class="col-sm-2 first">FLSA Status</div>
+			        <div class="col-sm-10">{{ job.status }}</div>    
+			    </div>
+			    <div class="row">
+			        <div class="col-sm-2 first">Summary:</div>
+			        <div class="col-sm-10">{{ job.summary }}</div>    
+			    </div>
 			</div>
-			<div class="panel-body">
-				{% for flashMessage in app.session.flashbag.get('notice') %}
-				    <div class="alert alert-success">
-				        {{ flashMessage }}
-				    </div>
-				{% endfor %}
-				{% for flashMessage in app.session.flashbag.get('error') %}
-				    <div class="alert alert-danger">
-				        {{ flashMessage }}
-				    </div>
-				{% endfor %}
-				{{ form_start(form, {'attr': { 'class': 'form-horizontal'}}) }}
-					{{ form_errors(form) }}
-					<fieldset>
-						<!-- Form Name -->
-						<!-- Text input-->
-						<div class="control-group">
-							{{ form_label(form.firstName, 'First Name',{'label_attr': {'class':'control-label'}}) }}
-							{{ form_errors(form.firstName) }}
-							<div class="controls">
-								{{ form_widget(form.firstName) }}
-							</div>
-						</div>
 
-						<!-- Text input-->
-						<div class="control-group">
-							{{ form_label(form.lastName, '',{'label_attr': {'class':'control-label'}}) }}
-							{{ form_errors(form.lastName) }}
-							<div class="controls">
-								{{ form_widget(form.lastName) }}
-							</div>
-						</div>
-
-						<!-- Text input-->
-						<div class="control-group">
-							{{ form_label(form.phone, '',{'label_attr': {'class':'control-label'}}) }}
-							{{ form_errors(form.phone) }}
-							<div class="controls">
-								{{ form_widget(form.phone) }}
-							</div>
-						</div>
-
-						<!-- Text input-->
-						<div class="control-group">
-							{{ form_label(form.email, '',{'label_attr': {'class':'control-label'}}) }}
-							{{ form_errors(form.email) }}
-							<div class="controls">
-								{{ form_widget(form.email) }}
-							</div>
-						</div>
-
-						<!-- Textarea -->
-						<div class="control-group">
-							{{ form_label(form.qualifications, '',{'label_attr': {'class':'control-label'}}) }}
-							{{ form_errors(form.qualifications) }}
-							<div class="controls">                     
-								{{ form_widget(form.qualifications) }}
-							</div>
-						</div>
-
-						<!-- File Button --> 
-						<div class="control-group">
-							{{ form_label(form.file, '',{'label_attr': {'class':'control-label'}}) }}
-							{{ form_errors(form.file) }}
-							<div class="controls">
-								{{ form_widget(form.file) }}
-							</div>
-						</div>
-
-						<!-- Button -->
-						<div class="control-group">
-							<label class="control-label" for=""></label>
-							<div class="controls">
-								<button id="" name="" class="btn btn-primary">Submit Application</button>
-							</div>
-						</div>
-
-					</fieldset>
-					{{ form_widget(form.check) }}
-				{{ form_end(form) }}
+			<div class="row">
+				<div class="col-sm-12">{{ job.description|raw }}</div>
 			</div>
 		</div>
+		<div class="col-sm-5">
+			<div id="careers-application" class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title"><i class="icon icon-edit"></i> Reply Form</h3>
+				</div>
+				<div class="panel-body" id="{{ form.vars.full_name }}-form">
+
+					{% block teneleven_career_form %}
+						{% for flashMessage in app.session.flashbag.get('success') %}
+						    <div class="alert alert-success">
+						        {{ flashMessage }}
+						    </div>
+						{% endfor %}
+
+						{% for flashMessage in app.session.flashbag.get('error') %}
+						    <div class="alert alert-danger">
+						        {{ flashMessage }}
+						    </div>
+						{% endfor %}
+
+						{{ form_start(form, {'attr': { 'class': 'form-horizontal'}}) }}
+
+							{{ form_errors(form) }}
+
+							<fieldset>
+								<!-- Form Name -->
+								<!-- Text input-->
+								<div class="control-group">
+									{{ form_label(form.firstName, 'First Name',{'label_attr': {'class':'control-label'}}) }}
+									{{ form_errors(form.firstName) }}
+									<div class="controls">
+										{{ form_widget(form.firstName) }}
+									</div>
+								</div>
+
+								<!-- Text input-->
+								<div class="control-group">
+									{{ form_label(form.lastName, '',{'label_attr': {'class':'control-label'}}) }}
+									{{ form_errors(form.lastName) }}
+									<div class="controls">
+										{{ form_widget(form.lastName) }}
+									</div>
+								</div>
+
+								<!-- Text input-->
+								<div class="control-group">
+									{{ form_label(form.phone, '',{'label_attr': {'class':'control-label'}}) }}
+									{{ form_errors(form.phone) }}
+									<div class="controls">
+										{{ form_widget(form.phone) }}
+									</div>
+								</div>
+
+								<!-- Text input-->
+								<div class="control-group">
+									{{ form_label(form.email, '',{'label_attr': {'class':'control-label'}}) }}
+									{{ form_errors(form.email) }}
+									<div class="controls">
+										{{ form_widget(form.email) }}
+									</div>
+								</div>
+
+								<!-- Textarea -->
+								<div class="control-group">
+									{{ form_label(form.qualifications, '',{'label_attr': {'class':'control-label'}}) }}
+									{{ form_errors(form.qualifications) }}
+									<div class="controls">                     
+										{{ form_widget(form.qualifications) }}
+									</div>
+								</div>
+
+								<!-- File Button --> 
+								<div class="control-group">
+									{{ form_label(form.file, '',{'label_attr': {'class':'control-label'}}) }}
+									{{ form_errors(form.file) }}
+									<div class="controls">
+										{{ form_widget(form.file) }}
+									</div>
+								</div>
+
+								<!-- Button -->
+								<div class="control-group">
+									<label class="control-label" for=""></label>
+									<div class="controls">
+										<button id="" name="" class="btn btn-primary">Submit Application</button>
+									</div>
+								</div>
+
+							</fieldset>
+
+							{{ form_widget(form.check) }}
+
+						{{ form_end(form) }}
+
+					{% endblock %}
+
+				</div>
+			</div>
+		</div>
 	</div>
-</div>
 {% endblock %}
