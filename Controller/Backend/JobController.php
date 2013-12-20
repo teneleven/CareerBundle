@@ -205,7 +205,7 @@ class JobController extends Controller
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('job'));
+        return $this->redirect($this->generateUrl('teneleven_career_backend_job'));
     }
 
     /**
