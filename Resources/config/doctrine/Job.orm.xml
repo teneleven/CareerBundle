@@ -13,7 +13,7 @@
     <field name="releaseDate" type="datetime" column="release_date" nullable="true" />
     <field name="expirationDate" type="datetime" column="expiration_date" nullable="true" />
     <field name="summary" type="text" column="summary" nullable="true" />
-    <field name="description" type="text" column="description"/>
+    <field name="description" type="text" column="description" nullable="true"/>
     <field name="location" type="string" column="location" length="255" nullable="true" />
     <field name="reportTo" type="string" column="report_to" length="255" nullable="true" />
     <field name="contact" type="string" column="contact" length="255" nullable="true" />
