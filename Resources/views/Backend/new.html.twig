@@ -3,13 +3,17 @@
 {% import 'TenelevenCareerBundle:Backend:macros.html.twig' as macros %}
 
 {% block teneleven_career_content -%}
-
-    <h1>New Job</h1>
-
-    <div class="well">
-        <a href="{{ path('teneleven_career_backend_job') }}" class="btn btn-info">
-            Back to the list
-        </a>
+    <div class="page-header">
+        <div class="actions-menu">
+            <a href="{{ path('teneleven_career_backend_job') }}" class="btn btn-default">
+                <i class="glyphicon glyphicon-list"></i>
+                <span>Back to the list</span>
+            </a>
+        </div>
+        <h1>
+            <i class="glyphicon glyphicon-plus-sign"></i>
+            New Job
+        </h1>
     </div>
 
     {{ macros.form(form) }}

@@ -1,16 +1,23 @@
 {% extends 'TenelevenCareerBundle::admin.html.twig' %}
 
 {% block teneleven_career_content -%}
-    <h1>Job</h1>
-
-    <div class="well">
-        <a href="{{ path('teneleven_career_backend_job') }}" class="btn btn-info">
-            Back to the list
-        </a>
-        <a href="{{ path('teneleven_career_backend_job_edit', { 'id': entity.id }) }}" class="btn btn-primary">
-            Edit
-        </a>
+<div class="page-header">
+        <div class="actions-menu">
+            <a href="{{ path('teneleven_career_backend_job') }}" class="btn btn-default">
+                <i class="glyphicon glyphicon-list"></i>
+                <span>Back to the list</span>
+            </a>
+            <a href="{{ path('teneleven_career_backend_job_edit', { 'id': entity.id }) }}" class="btn btn-primary">
+                <i class="glyphicon glyphicon-pencil"></i>
+                <span>Edit</span>
+            </a>
+        </div>
+        <h1>
+            <i class="glyphicon glyphicon-envelope"></i>
+            Replies
+        </h1>
     </div>
+
 
     <table class="table">
         <tbody>
@@ -18,11 +25,11 @@
                 <th>Title</th>
                 <td>{{ entity.title }}</td>
             </tr>
-            <tr>
+       <!-- <tr>
                 <th>Slug</th>
                 <td>{{ entity.slug }}</td>
             </tr>
-<!--             <tr>
+            <tr>
                 <th>Release Date</th>
                 <td>{{ entity.releaseDate|date('Y-m-d H:i:s') }}</td>
             </tr>
@@ -34,62 +41,58 @@
                 <th>Summary</th>
                 <td>{{ entity.summary|raw }}</td>
             </tr>
-            <tr>
+            <!-- <tr>
                 <th>Description</th>
                 <td>{{ entity.description|raw }}</td>
-            </tr>
+            </tr> -->
             <tr>
                 <th>Location</th>
                 <td>{{ entity.location }}</td>
             </tr>
-            <tr>
+            <!-- <tr>
                 <th>Contact</th>
                 <td>{{ entity.contact }}</td>
-            </tr>
-            <tr>
+            </tr> -->
+            <!-- <tr>
                 <th>Is Published?</th>
                 <td>{{ entity.isPublished }}</td>
-            </tr>
-            <tr>
+            </tr> -->
+            <!-- <tr>
                 <th>Created At</th>
                 <td>{{ entity.createdAt|date('Y-m-d H:i:s') }}</td>
             </tr>
             <tr>
                 <th>Updated At</th>
                 <td>{{ entity.updatedAt|date('Y-m-d H:i:s') }}</td>
-            </tr>
-            <tr>
+            </tr> -->
+            <!-- <tr>
                 <th>Id</th>
                 <td>{{ entity.id }}</td>
-            </tr>
-            <tr>
-                <th>Replies</th>
-                <td>
-                    <table class="table table-striped">
-                        <tr>
-                            <th>Id</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Email</th>
-                            <th>Phone</th>
-                            <th>Qualifications</th>
-                            <th>Resume</th>
-                        </tr>
-                        {% for reply in entity.replies %}
-                            <tr>
-                                <td>{{ reply.id }}</td>
-                                <td>{{ reply.firstName }}</td>
-                                <td>{{ reply.lastName }}</td>
-                                <td>{{ reply.email }}</td>
-                                <td>{{ reply.phone }}</td>
-                                <td>{{ reply.qualifications }}</td>
-                                <td>{% if reply.resume %} <a href="{{reply.path }}" target="_blank">{{ reply.resume }}</a> {% endif %}</td>
-                            </tr>
-                        {% endfor %}
-                    </table>                    
-                </td>
-            </tr>
+            </tr> -->
         </tbody>
+    </table>
+    
+    <table class="table table-striped">
+        <tr>
+            <th>Id</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Qualifications</th>
+            <th>Resume</th>
+        </tr>
+        {% for reply in entity.replies %}
+            <tr>
+                <td>{{ reply.id }}</td>
+                <td>{{ reply.firstName }}</td>
+                <td>{{ reply.lastName }}</td>
+                <td>{{ reply.email }}</td>
+                <td>{{ reply.phone }}</td>
+                <td>{{ reply.qualifications }}</td>
+                <td>{% if reply.resume %} <a href="{{reply.path }}" target="_blank">{{ reply.resume }}</a> {% endif %}</td>
+            </tr>
+        {% endfor %}
     </table>
 
     <div class="well">

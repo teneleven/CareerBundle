@@ -8,7 +8,6 @@
 	      		<th>Published</th>
 	          <th>Replies</th>
 	          <th>Title</th>
-	          <th>Slug</th>
 	          <th>Location</th>
 	          
 	          <th>Updated At</th>
@@ -19,18 +18,16 @@
 	    <tbody>
 	      {% for job in jobs %}
 	        <tr>
-	        	<td>{% if job.isPublished %}<span class="glyphicon glyphicon-ok"></span>{% endif %}</td>
+	          <td>{% if job.isPublished %}<span class="glyphicon glyphicon-ok"></span>{% endif %}</td>
 	      	  <td>{{ job.replies|length }}</td>
 	          <td><a href="{{ path('teneleven_career_backend_job_show', { 'id': job.id }) }}">{{ job.title }}</a></td>
-	          <td>{{ job.slug }}</td>
-	          <td>{{ job.location }}</td>
-	          
-	          <td>{% if job.createdAt %}{{ job.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-	          <td>{% if job.updatedAt %}{{ job.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-	          <td>
-	            <div class="pull-right">
-	                <a class="btn btn-info" href="{{ path('teneleven_career_backend_job_show', { 'id': job.id }) }}">show</a>
-	                <a class="btn btn-primary" href="{{ path('teneleven_career_backend_job_edit', { 'id': job.id }) }}">edit</a>
+	          <td>{{ job.location }}</td>	          
+	          <td class="updated-at">{% if job.createdAt %}{{ job.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+	          <td class="updated-at">{% if job.updatedAt %}{{ job.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+	          <td class="actions text-right">
+	            <div class="btn-group">
+	                <a class="btn btn-default show" title="Replies" href="{{ path('teneleven_career_backend_job_show', { 'id': job.id }) }}"><span class="glyphicon glyphicon-envelope"></span> Replies</a>
+	                <a class="btn btn-primary edit" title="Edit" href="{{ path('teneleven_career_backend_job_edit', { 'id': job.id }) }}"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
 	            </div>
 	          </td>
 	        </tr>
@@ -129,6 +126,9 @@
 							</label>
 						</div>
 					</div>
+				</div>
+				<div class="well">
+					{{ form_widget(form.submit, {'attr': {'class' : 'btn btn-info'}}) }}
 				</div>
 	    {{ form_end(form) }}
 
