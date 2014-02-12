@@ -5,7 +5,9 @@
     <div class="row">
         <div class="col-sm-4"></div>
         <div class="col-sm-8">
-            {{ render(controller('TenelevenCareerBundle:Frontend/Job:list')) }}   
+            {% block teneleven_careers_list -%}
+                {{ render(controller('TenelevenCareerBundle:Frontend/Job:list')) }}   
+            {% endblock %}
         </div>
     </div>
 {% endblock %}

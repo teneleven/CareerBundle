@@ -49,7 +49,7 @@ class JobController extends Controller
             throw $this->createNotFoundException($e->getMessage());
         }
 
-        return $this->render($template, array('jobs' => $pager));
+        return $this->render($template, array('pager' => $pager));
     }
 
     /**

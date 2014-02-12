@@ -1,13 +1,11 @@
 {% import 'TenelevenCareerBundle:Frontend:macros.html.twig' as macros %}
 
-{% block teneleven_careers_list %}
-    {% if jobs.haveToPaginate()|default(false) %}
-        {{ pagination(jobs) }}
-    {% endif %}
+{% if jobs.haveToPaginate()|default(false) %}
+    {{ pagination(jobs) }}
+{% endif %}
 
-    {{ macros.list(jobs) }}
+{{ macros.list(jobs) }}
 
-    {% if jobs.haveToPaginate()|default(false) %}
-        {{ pagination(jobs) }}
-    {% endif %}
-{% endblock %}
+{% if jobs.haveToPaginate()|default(false) %}
+    {{ pagination(jobs) }}
+{% endif %}
