@@ -4,13 +4,14 @@ namespace Teneleven\Bundle\CareerBundle\Controller\Frontend;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Teneleven\Bundle\CareerBundle\Entity\Job;
 use Teneleven\Bundle\CareerBundle\Entity\Reply;
 use Teneleven\Bundle\CareerBundle\Form\JobType;
 use Teneleven\Bundle\CareerBundle\Form\ReplyType;
-
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Pagerfanta\Pagerfanta;
+use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Exception\OutOfRangeCurrentPageException;
 
 /**
  * Job controller.
@@ -23,7 +24,7 @@ class JobController extends Controller
      * Display Index Template
      *
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         return $this->render('TenelevenCareerBundle:Frontend:index.html.twig');
     }
@@ -31,17 +32,24 @@ class JobController extends Controller
     /**
      * List all Jobs
      */
-    public function listAction($template = 'TenelevenCareerBundle:Frontend:list.html.twig')
+    public function listAction(Request $request, $page = 1, $template = 'TenelevenCareerBundle:Frontend:list.html.twig')
     {
-        $em = $this->getDoctrine()->getManager();
+        $query = $this->getRepository()
+            ->createQueryBuilder('j')
+            ->where('j.isPublished = 1')
+            ->addOrderBy('j.releaseDate', 'DESC')
+            ->getQuery()
+        ;
 
-        $jobs = $em->getRepository('TenelevenCareerBundle:Job')->findBy(array(
-            'isPublished' => true
-        ));
+        $pager = new Pagerfanta(new DoctrineORMAdapter($query));
 
-        return $this->render($template, array(
-            'jobs' => $jobs,
-        ));
+        try {
+            $pager->setCurrentpage($page);
+        } catch(OutOfRangeCurrentPageException $e) {
+            throw $this->createNotFoundException($e->getMessage());
+        }
+
+        return $this->render($template, array('jobs' => $pager));
     }
 
     /**
@@ -134,5 +142,13 @@ class JobController extends Controller
         ;
 
         $result = $this->get('mailer')->send($message);   
+    }
+
+    /**
+     * @return EntityRepository
+     */
+    protected function getRepository()
+    {
+        return $this->getDoctrine()->getManager()->getRepository('TenelevenCareerBundle:Job');
     }
 }
