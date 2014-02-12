@@ -1,12 +1,11 @@
 {% extends 'TenelevenCareerBundle::layout.html.twig' %}
 
 {% block teneleven_career_content -%}
-	<h1>Careers</h1>
-	<div class="row">
-		<div class="col-sm-4">
-		</div>
-	    <div class="col-sm-8">
-			{{ render(controller('TenelevenCareerBundle:Frontend/Job:list')) }}   
-	    </div>
-	</div>
+    <h1>Careers</h1>
+    <div class="row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-8">
+            {{ render(controller('TenelevenCareerBundle:Frontend/Job:list')) }}   
+        </div>
+    </div>
 {% endblock %}
