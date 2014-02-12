@@ -1,0 +1,36 @@
+{% macro list(jobs) %}
+    {% if jobs|length %}
+        <div class="careers-list">
+            {% for job in jobs %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                <a href="{{ path('teneleven_career_frontend_show', { 'slug' : job.slug}) }}" class="btn">
+                                    DETAILS <i class="icon icon-dottedarrow-right"></i>
+                                </a>
+                                {{ job.title }}
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-2">Location:</div>
+                                <div class="col-sm-10">{{ job.location }}</div>    
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-2">Reports To:</div>
+                                <div class="col-sm-10">{{ job.reportTo }}</div>    
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-2">Status</div>
+                                <div class="col-sm-10">{{ job.status }}</div>    
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-2">Summary:</div>
+                                <div class="col-sm-10">{{ job.summary }}</div>    
+                            </div>
+                        </div>
+                    </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endmacro %}
