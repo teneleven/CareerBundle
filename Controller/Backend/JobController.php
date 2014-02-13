@@ -7,6 +7,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Teneleven\Bundle\CareerBundle\Entity\Job;
 use Teneleven\Bundle\CareerBundle\Form\JobType;
 
+//Pagerfanta 
+use Pagerfanta\Pagerfanta;
+use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Adapter\ArrayAdapter;
+use Pagerfanta\Exception\OutOfRangeCurrentPageException;
+use Pagerfanta\Adapter\DoctrineCollectionAdapter;
+
 /**
  * Job controller.
  *
@@ -17,13 +24,23 @@ class JobController extends Controller
     /**
      * Lists all Jobs.
      */
-    public function indexAction()
+    public function indexAction(Request $request, $page = 1, $max = 20)
     {
+        $jobs = $this->getRepository()->findAll();
 
-        $entities = $this->getRepository()->findAll();
+        $pager = new Pagerfanta(new ArrayAdapter($jobs));
+
+        try {
+            $pager
+                ->setMaxPerPage($max)
+                ->setCurrentpage($request->query->get('page', $page));
+
+        } catch (OutOfRangeCurrentPageException $e) {
+            throw $this->createNotFoundException($e->getMessage());
+        }
 
         return $this->render('TenelevenCareerBundle:Backend:index.html.twig', array(
-            'entities' => $entities
+            'pager' => $pager
         ));
     }
     
@@ -94,22 +111,35 @@ class JobController extends Controller
      * Finds and displays a Job entity.
      *
      */
-    public function showAction($id)
+    public function showAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('TenelevenCareerBundle:Job')->find($id);
+        $job = $em->getRepository('TenelevenCareerBundle:Job')->find($id);
 
-        if (!$entity) {
+        if (!$job) {
             throw $this->createNotFoundException('Unable to find Job entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
 
-        return $this->render('TenelevenCareerBundle:Backend:show.html.twig', array(
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),
-        ));
+        $pager = new Pagerfanta(new DoctrineCollectionAdapter($job->getReplies()));
+
+        try {
+            $pager->setCurrentpage($request->query->get('page', 1));
+
+        } catch (OutOfRangeCurrentPageException $e) {
+            throw $this->createNotFoundException($e->getMessage());
+        }
+
+        return $this->render(
+            'TenelevenCareerBundle:Backend:show.html.twig', 
+            array(
+                'job' => $job,
+                'delete_form' => $deleteForm->createView(),
+                'pager' => $pager
+            )
+        );
     }
 
     /**
@@ -118,19 +148,17 @@ class JobController extends Controller
      */
     public function editAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
+        $job = $this->getDoctrine()->getManager()->getRepository('TenelevenCareerBundle:Job')->find($id);
 
-        $entity = $em->getRepository('TenelevenCareerBundle:Job')->find($id);
-
-        if (!$entity) {
+        if (!$job) {
             throw $this->createNotFoundException('Unable to find Job entity.');
         }
 
-        $editForm = $this->createEditForm($entity);
+        $editForm = $this->createEditForm($job);
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('TenelevenCareerBundle:Backend:edit.html.twig', array(
-            'entity'      => $entity,
+            'job'      => $job,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
@@ -160,20 +188,18 @@ class JobController extends Controller
      */
     public function updateAction(Request $request, $id)
     {
-        $em = $this->getDoctrine()->getManager();
+        $job = $this->getRepository()->find($id);
 
-        $entity = $em->getRepository('TenelevenCareerBundle:Job')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Job entity.');
+        if (!$job) {
+            throw $this->createNotFoundException('Unable to find Job.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createEditForm($entity);
+        $editForm = $this->createEditForm($job);
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
-            $em->flush();
+            $this->getDoctrine()->getManager()->flush();
 
             return $this->redirect($this->generateUrl('teneleven_career_backend_job_edit', array('id' => $id)));
         }
@@ -190,21 +216,14 @@ class JobController extends Controller
      */
     public function deleteAction(Request $request, $id)
     {
-        $form = $this->createDeleteForm($id);
-        $form->handleRequest($request);
+        $job = $this->getRepository()->find($id);
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('TenelevenCareerBundle:Job')->find($id);
-
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Job entity.');
-            }
-
-            $em->remove($entity);
-            $em->flush();
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Job entity.');
         }
 
+        $em->remove($entity);
+        $em->flush();
         return $this->redirect($this->generateUrl('teneleven_career_backend_job'));
     }
 
@@ -220,7 +239,6 @@ class JobController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('teneleven_career_backend_job_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete', 'attr' => array('class' => 'btn btn-danger')))
             ->getForm()
         ;
     }
