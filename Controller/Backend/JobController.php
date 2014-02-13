@@ -19,14 +19,14 @@ class JobController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('TenelevenCareerBundle:Job')->findAll();
+        $entities = $this->getRepository()->findAll();
 
         return $this->render('TenelevenCareerBundle:Backend:index.html.twig', array(
             'entities' => $entities
         ));
     }
+    
     /**
      * Creates a new Job entity.
      *
@@ -223,5 +223,13 @@ class JobController extends Controller
             ->add('submit', 'submit', array('label' => 'Delete', 'attr' => array('class' => 'btn btn-danger')))
             ->getForm()
         ;
+    }
+
+    /**
+     * @return EntityRepository
+     */
+    protected function getRepository()
+    {
+        return $this->getDoctrine()->getManager()->getRepository('TenelevenCareerBundle:Job');
     }
 }

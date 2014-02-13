@@ -70,6 +70,16 @@ class Job
     private $replies;
 
     /**
+     * @var string
+     */
+    private $status;
+
+    /**
+     * @var string
+     */
+    private $reportTo;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -418,16 +428,20 @@ class Job
     {
         return $this->replies;
     }
-    /**
-     * @var string
-     */
-    private $status;
 
     /**
-     * @var string
+     * Create Reply linked to this Job
+     * 
+     * @return  \Teneleven\Bundle\CareerBundle\Entity\Reply $reply
      */
-    private $reportTo;
+    public function createNewReply()
+    {
+        $reply = new \Teneleven\Bundle\CareerBundle\Entity\Reply;
 
+        $reply->setJob($this);
+
+        return $reply;
+    }
 
     /**
      * Set status

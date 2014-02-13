@@ -11,6 +11,7 @@ use Teneleven\Bundle\CareerBundle\Form\ReplyType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Pagerfanta\Pagerfanta;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Adapter\ArrayAdapter;
 use Pagerfanta\Exception\OutOfRangeCurrentPageException;
 
 /**
@@ -21,75 +22,90 @@ class JobController extends Controller
 {
 
     /**
-     * Display Index Template
-     *
+     * Index Action
+     * 
+     * @param  Request   $request     [description]
+     * @param  integer     $page         [description]
+     * @param  integer     $max          [description]
+     * @param  string       $template   [description]
+     * 
+     * @return   Response
      */
-    public function indexAction(Request $request)
-    {
-        return $this->render('TenelevenCareerBundle:Frontend:index.html.twig');
-    }
-
-    /**
-     * List all Jobs
-     */
-    public function listAction(Request $request, $page = 1, $template = 'TenelevenCareerBundle:Frontend:list.html.twig')
+    public function indexAction(Request $request, $page = 1, $max = 5, $template = 'TenelevenCareerBundle:Frontend:index.html.twig')
     {
         $query = $this->getRepository()
             ->createQueryBuilder('j')
             ->where('j.isPublished = 1')
-            ->addOrderBy('j.releaseDate', 'DESC')
-            ->getQuery()
-        ;
+            ->addOrderBy('j.releaseDate', 'DESC');
 
         $pager = new Pagerfanta(new DoctrineORMAdapter($query));
 
         try {
-            $pager->setCurrentpage($page);
-        } catch(OutOfRangeCurrentPageException $e) {
+            $pager
+                ->setMaxPerPage($max)
+                ->setCurrentpage($request->query->get('page', $page));
+
+        } catch (OutOfRangeCurrentPageException $e) {
             throw $this->createNotFoundException($e->getMessage());
         }
 
-        return $this->render($template, array('pager' => $pager));
+        return $this->render($template, 
+            array(
+                'pager' => $pager
+            )
+        );
     }
 
     /**
-     * Show Individual Job
+     * Show Action 
+     * 
+     * @param  [type] $slug     [description]
+     * @param  string $template [description]
+     * @return [type]           [description]
      */
     public function showAction($slug, $template = 'TenelevenCareerBundle:Frontend:show.html.twig')
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $job = $em->getRepository('TenelevenCareerBundle:Job')->findOneBy(array('slug' => $slug, 'isPublished' => true));
-
-        $replyForm = $this->createForm(new ReplyType(), new Reply(),array(
-            'action' => $this->generateUrl('teneleven_career_frontend_reply', array('slug' => $job->getSlug()))
+        $job = $this->getRepository()->findOneBy(array(
+            'slug' => $slug, 
+            'isPublished' => true
         ));
 
-        return $this->render($template, array(
-            'job' => $job, 
-            'form' => $replyForm->createView()
-        ));
+        if (!$job) {
+            throw $this->createNotFoundException('That Job does not exist');
+        }
+
+        $reply = $job->createNewReply();
+
+        $replyForm = $this->createReplyForm($reply);
+
+        return $this->render(
+            $template, 
+            array(
+                'job' => $job, 
+                'form' => $replyForm->createView()
+            )
+        );
     }
 
     /**
-     * Handle Replies for Job
+     * Reply Action 
+     * 
+     * @param string        $slug    Slug for Job Replied To
+     * @param  Request   $request [description]
+     * 
+     * @return [Response
      */
     public function replyAction($slug, Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
+        $job = $this->getRepository()->findOneBy(array('slug' => $slug));   
 
-        $job = $em->getRepository('TenelevenCareerBundle:Job')->findOneBy(array('slug' => $slug));   
+        if (!$job) {
+            throw $this->createNotFoundException('That Job does not exist');
+        }
 
-        $reply = new Reply();
+        $reply = $job->createNewReply();
 
-        $reply->setJob($job);
-        
-        $replyForm = $this->createForm(new ReplyType(), $reply, array(
-            'action' => $this->generateUrl('teneleven_career_frontend_reply', array(
-                'slug' => $job->getSlug()
-            )),
-            'method' => 'POST'
-        ));
+        $replyForm = $this->createReplyForm($reply);
 
         $replyForm->handleRequest($request);
 
@@ -101,16 +117,17 @@ class JobController extends Controller
 
             $reply->uploadResume($root);
 
+            $em = $this->getDoctrine()->getManager();
+
             $em->persist($reply);
 
             $em->flush();
 
-            $this->sendEmail($replyForm->getData());
+            $this->sendEmail($reply);
 
             return $this->redirect($this->generateUrl('teneleven_career_frontend_thanks', array(
                 'slug' => $job->getSlug())
             ));
-
         }
 
         $this->get('session')->getFlashBag()->add(
@@ -124,7 +141,7 @@ class JobController extends Controller
         ));
     }
 
-    protected function sendEmail($values)
+    protected function sendEmail(Reply $reply)
     {
         $message = \Swift_Message::newInstance()
             ->setSubject($this->container->getParameter('teneleven_career.subject'))
@@ -135,13 +152,29 @@ class JobController extends Controller
                 $this->renderView(
                     $this->container->getParameter('teneleven_career.template'),
                     array(
-                        'values' => $values
+                        'reply' => $reply
                     )
                 )
             )
         ;
 
         $result = $this->get('mailer')->send($message);   
+    }
+
+    protected function createReplyForm($reply) 
+    {
+        return $this->createForm(
+            new ReplyType, 
+            $reply, 
+            array(
+                'action' => $this->generateUrl(
+                    'teneleven_career_frontend_reply', array(
+                        'slug' => $reply->getJob()->getSlug()
+                    )
+                ),
+                'method' => 'POST'
+            )
+        );        
     }
 
     /**
