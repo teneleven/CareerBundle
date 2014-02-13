@@ -7,6 +7,7 @@
     
     <parameters>
         <parameter key="teneleven.career.backend.controller.class">Teneleven\Bundle\CareerBundle\Controller\Backend\JobController</parameter>
+        <parameter key="teneleven.career.backend.reply.controller.class">Teneleven\Bundle\CareerBundle\Controller\Backend\ReplyController</parameter>
         <parameter key="teneleven.career.frontend.controller.class">Teneleven\Bundle\CareerBundle\Controller\Frontend\JobController</parameter>
     </parameters>
 
@@ -17,6 +18,11 @@
             </call>
         </service>
         <service id="teneleven.career.frontend.controller" class="%teneleven.career.frontend.controller.class%">
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
+        </service>
+        <service id="teneleven.career.backend.reply.controller" class="%teneleven.career.backend.reply.controller.class%">
             <call method="setContainer">
                 <argument type="service" id="service_container" />
             </call>
