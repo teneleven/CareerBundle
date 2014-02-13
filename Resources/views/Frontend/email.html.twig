@@ -1,1 +1,44 @@
-New Application Recieved!
+
+    <table>
+        <tr>
+            <th>View</th>
+            <th>Title</th>
+            <th>Location</th>
+            <th>Status</th>
+            <th>Created At</th>
+        </tr>
+        <tr>
+            <td><a href="https://{{ app.request.host }}{{ path('teneleven_career_backend_job_show', { 'id' : reply.job.id }) }}">{{ reply.job.replies|length }} Replies</a></td>
+            <td>{{ reply.job.title }}</td>
+            <td>{{ reply.job.location }}</td>
+            <td>{{ reply.job.status }}</td>
+            <td>{{ reply.createdAt|date('F d, Y h:m:s') }}</td>
+        </tr>
+    </table>
+    <br>
+    <table align="left">
+        <tr>
+            <th>First Name:</th>
+            <td>{{ reply.firstName }}</td>
+        </tr>
+        <tr>
+            <th>Last Name:</th>
+            <td>{{ reply.lastName }}</td>
+        </tr>
+        <tr>
+            <th>Phone:</th>
+            <td>{{ reply.phone }}</td>
+        </tr>
+        <tr>
+            <th>Email:</th>
+            <td>{{ reply.email }}</td>
+        </tr>
+        <tr>
+            <th>Qualifications:</th>
+            <td>{{ reply.qualifications|raw }}</td>
+        </tr>
+        <tr>
+            <th>Resume:</th>
+            <td>{{ reply.resume }}</td>
+        </tr>
+    </table>
