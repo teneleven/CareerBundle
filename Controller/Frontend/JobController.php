@@ -39,7 +39,7 @@ class JobController extends Controller
         $query = $this->getRepository()
             ->createQueryBuilder('j')
             ->where('j.isPublished = 1')
-            ->addOrderBy('j.releaseDate', 'DESC');
+            ->addOrderBy('j.createdAt', 'DESC');
 
         $pager = new Pagerfanta(new DoctrineORMAdapter($query));
 
