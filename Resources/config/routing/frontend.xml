@@ -17,7 +17,7 @@
 	</route>
 
 	<route id="teneleven_career_frontend_thanks" pattern="/{slug}/thanks">
-	    <default key="_controller">teneleven.career.frontend.controller:showAction</default>
+	    <default key="_controller">teneleven.career.frontend.controller:thanksAction</default>
 	    <default key="template">TenelevenCareerBundle:Frontend:thanks.html.twig</default>
 	</route>
 

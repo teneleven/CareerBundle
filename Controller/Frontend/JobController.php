@@ -52,7 +52,8 @@ class JobController extends Controller
             throw $this->createNotFoundException($e->getMessage());
         }
 
-        return $this->render($template, 
+        return $this->render(
+            $template, 
             array(
                 'pager' => $pager
             )
@@ -128,6 +129,11 @@ class JobController extends Controller
 
             $this->sendEmail($reply);
 
+            $this->get('session')->getFlashBag()->add(
+                'reply_id',
+                $reply->getId()
+            );
+
             return $this->redirect($this->generateUrl('teneleven_career_frontend_thanks', array(
                 'slug' => $job->getSlug())
             ));
@@ -138,12 +144,44 @@ class JobController extends Controller
             'There was an error with your reply.'
         );
 
-        return $this->render('TenelevenCareerBundle:Frontend:show.html.twig', array(
-            'job' => $job, 
-            'form' => $replyForm->createView()
-        ));
+        return $this->render(
+            'TenelevenCareerBundle:Frontend:show.html.twig', 
+            array(
+                'job' => $job, 
+                'form' => $replyForm->createView()
+            )
+        );
     }
 
+    public function thanksAction($slug)
+    {
+        $job = $this->getRepository()->findOneBy(array('slug' => $slug));   
+
+        if (!$job) {
+            throw $this->createNotFoundException('That Job does not exist');
+        }
+
+        if (!$this->get('session')->getFlashBag()->has('reply_id')) {
+            return $this->redirect($this->generateUrl('teneleven_career_frontend_show', array(
+                'slug' => $job->getSlug())
+            ));
+        }
+
+        return $this->render(
+            'TenelevenCareerBundle:Frontend:thanks.html.twig', 
+            array(
+                'job' => $job
+            )
+        );      
+    }
+
+    /**
+     * Send a notification email to Admin
+     * 
+     * @param  Reply  $reply [description]
+     * 
+     * @return [type]        [description]
+     */
     protected function sendEmail(Reply $reply)
     {
         $message = \Swift_Message::newInstance()
@@ -164,7 +202,14 @@ class JobController extends Controller
         $result = $this->get('mailer')->send($message);   
     }
 
-    protected function createReplyForm($reply) 
+    /**
+     * Create a Reply Form
+     * 
+     * @param  [type] $reply [description]
+     * 
+     * @return [type]        [description]
+     */
+    protected function createReplyForm(Reply $reply) 
     {
         return $this->createForm(
             new ReplyType, 
