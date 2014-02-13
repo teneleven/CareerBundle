@@ -4,14 +4,17 @@ namespace Teneleven\Bundle\CareerBundle\Controller\Frontend;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
+//CareerBundle
 use Teneleven\Bundle\CareerBundle\Entity\Job;
 use Teneleven\Bundle\CareerBundle\Entity\Reply;
 use Teneleven\Bundle\CareerBundle\Form\JobType;
 use Teneleven\Bundle\CareerBundle\Form\ReplyType;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+
+//Pagerfanta 
 use Pagerfanta\Pagerfanta;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
-use Pagerfanta\Adapter\ArrayAdapter;
 use Pagerfanta\Exception\OutOfRangeCurrentPageException;
 
 /**
