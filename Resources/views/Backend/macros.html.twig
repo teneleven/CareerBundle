@@ -5,7 +5,8 @@
 		<table class="table table-hover">
 	    <thead>
 	      <tr>
-	      		<th>Published</th>
+	      	<th>ID</th>
+	      	<th>Published</th>
 	          <th>Replies</th>
 	          <th>Title</th>
 	          <th>Location</th>
@@ -18,6 +19,7 @@
 	    <tbody>
 	      {% for job in jobs %}
 	        <tr>
+	        	<td>{{ job.id }}</td>
 	          <td>{% if job.isPublished %}<span class="glyphicon glyphicon-ok"></span>{% endif %}</td>
 	      	  <td>{{ job.replies|length }}</td>
 	          <td><a href="{{ path('teneleven_career_backend_job_show', { 'id': job.id }) }}">{{ job.title }}</a></td>
@@ -28,6 +30,8 @@
 	            <div class="btn-group">
 	                <a class="btn btn-default show" title="Replies" href="{{ path('teneleven_career_backend_job_show', { 'id': job.id }) }}"><span class="glyphicon glyphicon-envelope"></span> Replies</a>
 	                <a class="btn btn-primary edit" title="Edit" href="{{ path('teneleven_career_backend_job_edit', { 'id': job.id }) }}"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
+	                <a class="btn btn-danger delete" title="Edit" href="{{ path('teneleven_career_backend_job_delete', { 'id': job.id }) }}" onclick="javascript: if(window.confirm('Are you sure?')){document.getElementById('formDelete{{job.id}}').submit();}return false;"><span class="glyphicon glyphicon-trash"></span> Delete</a>
+	                <form id="formDelete{{ job.id }}" action="{{ path('teneleven_career_backend_job_delete', { 'id': job.id }) }}" method="post"><input type="hidden" name="_method" value="DELETE" /></form>
 	            </div>
 	          </td>
 	        </tr>
