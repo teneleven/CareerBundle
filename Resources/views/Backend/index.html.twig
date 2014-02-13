@@ -15,6 +15,14 @@
         </h1>
     </div>
 
-    {{ macros.list(entities) }}
-    
+    {% if pager.haveToPaginate()|default(false) %}
+        {{ pagerfanta(pager) }}
+    {% endif %}
+
+    {{ macros.list(pager) }}
+ 
+     {% if pager.haveToPaginate()|default(false) %}
+        {{ pagerfanta(pager) }}
+    {% endif %} 
+
 {% endblock %}
