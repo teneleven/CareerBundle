@@ -216,11 +216,13 @@ class JobController extends Controller
      */
     public function deleteAction(Request $request, $id)
     {
-        $job = $this->getRepository()->find($id);
+        $entity = $this->getRepository()->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Job entity.');
         }
+
+        $em = $this->getDoctrine()->getManager();
 
         $em->remove($entity);
         $em->flush();
