@@ -22,7 +22,7 @@ class ReplyType extends AbstractType
             ->add('phone','text', array('attr' => array('class' => 'input-large')))
             ->add('email','text', array('attr' => array('class' => 'input-large')))
             ->add('qualifications','textarea', array('attr' => array('class' => 'input-large')))
-            ->add('file', 'file', array('required' => false, 'mapped' => false, 'attr' => array('class' => 'input-large')))
+            ->add('file', 'file', array('required' => false, 'attr' => array('class' => 'input-large')))
             //Honeypot Check
             ->add('check','text', array('required' => false, 'mapped' => false, 'attr' => array('style' => 'position: absolute; left: -100%; top: -100%;'), 'constraints' => array(new Blank())))
         ;
