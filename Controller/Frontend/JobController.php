@@ -212,7 +212,7 @@ class JobController extends Controller
     protected function createReplyForm(Reply $reply) 
     {
         return $this->createForm(
-            new ReplyType, 
+            ReplyType::class, 
             $reply, 
             array(
                 'action' => $this->generateUrl(
