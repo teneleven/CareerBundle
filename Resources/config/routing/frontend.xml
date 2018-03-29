@@ -4,19 +4,19 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
-	<route id="teneleven_career_frontend_index" pattern="/">
+	<route id="teneleven_career_frontend_index" path="/">
 	    <default key="_controller">teneleven.career.frontend.controller:indexAction</default>
 	</route>
 
-	<route id="teneleven_career_frontend_show" pattern="/{slug}">
+	<route id="teneleven_career_frontend_show" path="/{slug}">
 	    <default key="_controller">teneleven.career.frontend.controller:showAction</default>
 	</route>
 
-	<route id="teneleven_career_frontend_reply" pattern="/{slug}/reply">
+	<route id="teneleven_career_frontend_reply" path="/{slug}/reply">
 	    <default key="_controller">teneleven.career.frontend.controller:replyAction</default>
 	</route>
 
-	<route id="teneleven_career_frontend_thanks" pattern="/{slug}/thanks">
+	<route id="teneleven_career_frontend_thanks" path="/{slug}/thanks">
 	    <default key="_controller">teneleven.career.frontend.controller:thanksAction</default>
 	    <default key="template">TenelevenCareerBundle:Frontend:thanks.html.twig</default>
 	</route>
